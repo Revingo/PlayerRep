@@ -46,11 +46,18 @@ player::player(WINDOW * win, int y, int x, char c){			//Costruttore della classe
 		int xm=17;
 		mvwaddch(curwin, ym, xm, '-');
 	}
-	for(int xh=16; xh>1; xh--){
+	for(int xh=15; xh>1; xh--){
 		int yh=21;
 		mvwaddch(curwin, yh, xh, '#');
 	}
-	mvwaddch(curwin, y, 16, '#');
+	for(int ym=y-1; ym>20; ym--){
+		int xm=16;
+		mvwaddch(curwin, ym, xm, '|');
+	}
+	for(int ym=y-1; ym>20; ym--){
+		int xm=18;
+		mvwaddch(curwin, ym, xm, '|');
+	}
 	mvwprintw(curwin, 0, 0,"HP: %d", life);					//Stampa la vita del personaggio
 }
 
@@ -72,7 +79,7 @@ void player::stairsup(){									//Controlla se ci sono scale, la loro direzione
 				yLoc=1;
 			display();
 			mvwaddch(curwin, yLoc+1, xLoc, '-');
-			usleep(45000);
+			usleep(30000);
 			wrefresh(curwin);
 		}
 		yLoc--;
@@ -81,7 +88,7 @@ void player::stairsup(){									//Controlla se ci sono scale, la loro direzione
 		xLoc--;
 		display();
 		mvwaddch(curwin, yLoc+1, xLoc+1, '-');
-		usleep(45000);
+		usleep(30000);
 		wrefresh(curwin);
 	}
 	else{
@@ -94,7 +101,7 @@ void player::stairsup(){									//Controlla se ci sono scale, la loro direzione
 				yLoc=1;
 			display();
 			mvwaddch(curwin, yLoc+1, xLoc, '-');
-			usleep(45000);
+			usleep(30000);
 			wrefresh(curwin);
 		}
 		yLoc--;
@@ -103,7 +110,7 @@ void player::stairsup(){									//Controlla se ci sono scale, la loro direzione
 		xLoc++;
 		display();
 		mvwaddch(curwin, yLoc+1, xLoc-1, '-');
-		usleep(45000);
+		usleep(30000);
 		wrefresh(curwin);
 	}
 }
@@ -123,24 +130,28 @@ void player::stairsdown(){								//Come stairsup ma fa scendere il personaggio
 			mvwaddch(curwin, yLoc-1, xLoc, '-');
 	}
 
-	if(mvwinch(curwin, yLoc+1, xLoc)=='#' && mvwinch(curwin, yLoc, xLoc-1)=='#'){	//Controlla i blocchi attorno e sotto il personaggio
+	if(mvwinch(curwin, yLoc+1, xLoc)=='#' && mvwinch(curwin, yLoc, xLoc+1)=='#'){	//Controlla i blocchi attorno e sotto il personaggio
 		mvwaddch(curwin, yLoc, xLoc, ' ');											//e in base a quello decide come stamparlo
-		if(xLoc<=0)
-			xLoc=1;
-		mvwaddch(curwin, yLoc, xLoc, '-');
-		xLoc++;
-		yLoc--;
-		display();
-		usleep(45000);
-		wrefresh(curwin);
-	}
-	else if(mvwinch(curwin, yLoc+1, xLoc)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='#'){
-		mvwaddch(curwin, yLoc, xLoc, ' ');
 		if(xLoc<=0)
 			xLoc=1;
 		mvwaddch(curwin, yLoc, xLoc, '-');
 		xLoc--;
 		yLoc--;
+		while(mvwinch(curwin, yLoc, xLoc)=='|')
+			xLoc--;
+		display();
+		usleep(45000);
+		wrefresh(curwin);
+	}
+	else if(mvwinch(curwin, yLoc+1, xLoc)=='#' || mvwinch(curwin, yLoc, xLoc-1)=='#'){
+		mvwaddch(curwin, yLoc, xLoc, ' ');
+		if(xLoc<=0)
+			xLoc=1;
+		mvwaddch(curwin, yLoc, xLoc, '-');
+		xLoc++;
+		yLoc--;
+		while(mvwinch(curwin, yLoc, xLoc)=='|')
+			xLoc++;
 		display();
 		usleep(45000);
 		wrefresh(curwin);
@@ -149,6 +160,8 @@ void player::stairsdown(){								//Come stairsup ma fa scendere il personaggio
 		mvwaddch(curwin, yLoc, xLoc, ' ');
 		mvwaddch(curwin, yLoc, xLoc, '-');
 		yLoc++;
+		while(mvwinch(curwin, yLoc, xLoc)=='|')
+			xLoc--;
 		if(yLoc>=yMax-1)
 			yLoc=yMax-2;
 		display();
@@ -158,8 +171,8 @@ void player::stairsdown(){								//Come stairsup ma fa scendere il personaggio
 
 }
 
-void player::mvup(){							//Da mvup a mvleft cambiano la posizione del personaggio e controllano di
-	if(mvwinch(curwin, yLoc-1, xLoc)=='#')		//non farlo sbattere contro del terreno
+void player::mvup(){																	//Da mvup a mvleft cambiano la posizione del personaggio e controllano di
+	if(isterrain(mvwinch(curwin, yLoc-1, xLoc))==true)									//non farlo sbattere contro del terreno
 		return;
 	mvwaddch(curwin, yLoc, xLoc, ' ');
 	yLoc--;
@@ -168,7 +181,7 @@ void player::mvup(){							//Da mvup a mvleft cambiano la posizione del personag
 }
 
 void player::mvdown(){
-	if(mvwinch(curwin, yLoc+1, xLoc)=='#')
+	if(mvwinch(curwin, yLoc+1, xLoc)=='#' || mvwinch(curwin, yLoc+1, xLoc)=='|')
 		return;
 	if(mvwinch(curwin, yLoc+1, xLoc)=='-')
 		stairsdown();
@@ -191,7 +204,7 @@ void player::mvright(){
 }
 
 void player::mvleft(){
-	if(mvwinch(curwin, yLoc, xLoc-1)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='|')
+	if(mvwinch(curwin, yLoc, xLoc-1)=='#' || mvwinch(curwin, yLoc, xLoc-1)=='|')
 		return;
 	if(mvwinch(curwin, yLoc, xLoc-1)=='-')
 		stairsup();
@@ -276,9 +289,10 @@ int player::leftright(){
 	while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false  && yLoc+1!=yMax-1){			   //Controlla che sotto al pesonaggio ci sia del terreno
 		mvdown();
 		display();
-		usleep(30000);
+		usleep(42000);
 		wrefresh(curwin);
 	}
+	wtimeout(curwin, 2000);
 	int choice = wgetch(curwin);						   //Prende l'input di movimento
 	switch(choice){
 	case KEY_LEFT:
@@ -309,6 +323,8 @@ int player::move(){
 
 void player::display(){
 	mvwaddch(curwin, yLoc, xLoc, character);			//Stampa il personaggio
+	usleep(5000);
+	wrefresh(curwin);
 }
 
 #endif /* PLAYER_H_ */
