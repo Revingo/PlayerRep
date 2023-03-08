@@ -38,7 +38,7 @@ player::player(WINDOW * win, int y, int x, char c){			//Costruttore della classe
 	character=c;
 	dir=2;
 	life=3;
-	for(int xh=x; xh<xMax-9; xh++){							//Stampa un livello di prova. Puoi eliminare questa parte di codice fino a riga 52
+	for(int xh=x; xh<xMax-9; xh++){							//Stampa un livello di prova. Puoi eliminare questa parte di codice fino a riga 60
 		int yh=y+1;
 		mvwaddch(curwin, yh, xh, '#');
 	}
