@@ -54,7 +54,7 @@ player::player(WINDOW * win, int y, int x, char c){			//Costruttore della classe
 	mvwprintw(curwin, 0, 0,"HP: %d", life);					//Stampa la vita del personaggio
 }
 
-bool player::isterrain(char t){
+bool player::isterrain(char t){								//ritorna true se quello sotto al giocatore è considerabile terreno, false atrimenti
 	if(t=='#' || t=='-' || t=='|')
 		return true;
 	else
@@ -179,7 +179,7 @@ void player::mvdown(){
 }
 
 void player::mvright(){
-	if(mvwinch(curwin, yLoc, xLoc+1)=='#')
+	if(mvwinch(curwin, yLoc, xLoc+1)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='|')
 		return;
 	if(mvwinch(curwin, yLoc, xLoc+1)=='-')
 		stairsup();
@@ -191,7 +191,7 @@ void player::mvright(){
 }
 
 void player::mvleft(){
-	if(mvwinch(curwin, yLoc, xLoc-1)=='#')
+	if(mvwinch(curwin, yLoc, xLoc-1)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='|')
 		return;
 	if(mvwinch(curwin, yLoc, xLoc-1)=='-')
 		stairsup();
