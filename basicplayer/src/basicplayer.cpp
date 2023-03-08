@@ -1,7 +1,9 @@
 #include <ncurses.h>
 #include "player.h"
 #include <iostream>
+#include<thread>
 using namespace std;
+using namespace std::this_thread;
 
 int main(int argc, char ** argv) {
 	initscr();

@@ -1,9 +1,9 @@
 #include<ncurses.h>
 #include<unistd.h>
-#include<thread>
+
 #ifndef PLAYER_H_
 #define PLAYER_H_
-using namespace std::this_thread;
+
 
 class player {
 public:
@@ -14,16 +14,15 @@ public:
 	void mvleft();
 	void mvright();
 	int move();
-	void jump();
+	void jump(int direction);
 
-	void leftright();
+	int leftright(int *dire);
 
 	void display();
 
 private:
 	int xLoc, yLoc, xMax, yMax, dir;
 	char character;
-	bool nomv;
 	WINDOW * curwin;
 };
 
@@ -34,8 +33,7 @@ player::player(WINDOW * win, int y, int x, char c){
 	getmaxyx(curwin, yMax, xMax);
 	keypad(curwin, true);
 	character=c;
-	nomv=false;
-	dir=0;
+	dir=2;
 }
 
 void player::mvup(){
@@ -68,105 +66,95 @@ void player::mvleft(){
 
 }
 
-void player::jump(){
-	int direction = wgetch(curwin);
-	if(nomv==false && direction==KEY_UP){
-		nomv=true;
-		switch(dir){
-			case 0:
-				for(int cont = 0; cont < 3; cont++){
-					mvup();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-					mvright();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-				}
-				for(int cont = 0; cont < 3; cont++){
-					mvdown();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-					mvright();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-				}
-				break;
-			case 1:
-				for(int cont = 0; cont < 3; cont++){
-					mvup();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-					mvleft();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-				}
-				for(int cont = 0; cont < 3; cont++){
-					mvdown();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-					mvleft();
-					display();
-					usleep(30000);
-					wrefresh(curwin);
-				}
-				break;
-			case 2:
-				for(int cont = 0; cont < 3; cont++){
-					mvup();
-					display();
-					usleep(42000);
-					wrefresh(curwin);
-				}
-				for(int cont = 0; cont < 3; cont++){
-					mvdown();
-					display();
-					usleep(42000);
-					wrefresh(curwin);
-				}
-				break;
-			default:
-				break;
-		}
-	}
-
-}
-
-void player::leftright(){
-	if(nomv==false){
-		int choice = wgetch(curwin);
-
-		switch(choice){
-		case KEY_LEFT:
-			dir=1;
-			mvleft();
+void player::jump(int direction){
+	switch(direction){
+		case 0:
+			for(int cont = 0; cont < 3; cont++){
+				mvup();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+				mvleft();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+			}
+			for(int cont = 0; cont < 3; cont++){
+				mvdown();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+				mvleft();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+			}
 			break;
-
-		case KEY_RIGHT:
-			dir=2;
-			mvright();
+		case 1:
+			for(int cont = 0; cont < 3; cont++){
+				mvup();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+				mvright();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+			}
+			for(int cont = 0; cont < 3; cont++){
+				mvdown();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+				mvright();
+				display();
+				usleep(30000);
+				wrefresh(curwin);
+			}
 			break;
-
 		default:
-			dir=0;
+			for(int cont = 0; cont < 3; cont++){
+				mvup();
+				display();
+				usleep(42000);
+				wrefresh(curwin);
+			}
+			for(int cont = 0; cont < 3; cont++){
+				mvdown();
+				display();
+				usleep(42000);
+				wrefresh(curwin);
+			}
 			break;
-		}
-
 	}
+}
+int player::leftright(int *dire){
+
+	int choice = wgetch(curwin);
+	switch(choice){
+	case KEY_LEFT:
+		*dire=0;
+		mvleft();
+		break;
+
+	case KEY_RIGHT:
+		*dire=1;
+		mvright();
+		break;
+	case KEY_UP:
+		jump(dir);
+		break;
+
+	default:
+		*dire=2;
+		break;
+	}
+	return(choice);
 
 }
 
 int player::move(){
-	int escape = wgetch(curwin);
-	std::thread m(leftright);
-	std::thread j(jump);
-	return escape;
+	return leftright(&dir);
 }
 
 void player::display(){
