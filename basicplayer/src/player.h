@@ -9,6 +9,7 @@ class player {
 public:
 	player(WINDOW * win, int y, int x, char c);
 
+	bool isterrain(char t);
 	void mvup();
 	void mvdown();
 	void mvleft();
@@ -51,6 +52,13 @@ player::player(WINDOW * win, int y, int x, char c){			//Costruttore della classe
 	}
 	mvwaddch(curwin, y, 16, '#');
 	mvwprintw(curwin, 0, 0,"HP: %d", life);					//Stampa la vita del personaggio
+}
+
+bool player::isterrain(char t){
+	if(t=='#' || t=='-' || t=='|')
+		return true;
+	else
+		return false;
 }
 
 void player::stairsup(){									//Controlla se ci sono scale, la loro direzione e fa salire il personaggio
@@ -207,7 +215,7 @@ void player::jump(){											//Funzione per il salto. Prende in input l'ultima
 				usleep(30000);
 				wrefresh(curwin);
 			}
-			while((mvwinch(curwin, yLoc+1, xLoc)!='#' && (mvwinch(curwin, yLoc+1, xLoc)!='-')) && yLoc+1!=yMax-1){  //Controlla che sotto il personaggio ci sia del terreno, altrimenti continua a cadere
+			while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false && yLoc+1!=yMax-1){  //Controlla che sotto il personaggio ci sia del terreno, altrimenti continua a cadere
 				mvdown();
 				display();
 				usleep(30000);
@@ -229,7 +237,7 @@ void player::jump(){											//Funzione per il salto. Prende in input l'ultima
 				usleep(30000);
 				wrefresh(curwin);
 			}
-			while((mvwinch(curwin, yLoc+1, xLoc)!='#' && (mvwinch(curwin, yLoc+1, xLoc)!='-')) && yLoc+1!=yMax-1){
+			while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false && yLoc+1!=yMax-1){
 				mvdown();
 				display();
 				usleep(30000);
@@ -265,7 +273,7 @@ int player::leftright(){
 		xLoc=originx;
 		display();
 	}
-	while((mvwinch(curwin, yLoc+1, xLoc)!='#' && mvwinch(curwin, yLoc+1, xLoc)!='-') && yLoc+1!=yMax-1){			   //Controlla che sotto al pesonaggio ci sia del terreno
+	while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false  && yLoc+1!=yMax-1){			   //Controlla che sotto al pesonaggio ci sia del terreno
 		mvdown();
 		display();
 		usleep(30000);
