@@ -4,7 +4,7 @@
 
 class player {
     protected:
-        int xLoc, yLoc, xMax, yMax, life, originx, originy, projx, projy;
+        int xLoc, yLoc, xMax, yMax, life, originx, originy, projx, projy, money;
         bool s, dir, dirlock, j;
         char character;
         WINDOW * curwin;

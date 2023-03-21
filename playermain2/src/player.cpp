@@ -20,6 +20,9 @@ player::player(WINDOW * win, int y, int x, char c){
 	//Vita del giocatore
 	life=3;
 
+	//Soldi del giocatore (al momento inutilizzata)
+	money=0;
+
 	//Indica le y del proiettile
 	projy=y;
 
@@ -227,7 +230,7 @@ void player::mvleft(){
 		xLoc=1;
 }
 
-//Funzione per il salto. E' connessa con la funzione shoot per permettere di saltare mentre
+//Funzione per il salto. E' connessa con la funzione shoot() per permettere di saltare mentre
 //il proiettile sta venendo disegnato.
 //Ho aumentato l'ampiezza del salto e la sua velocità per migliorare il feeling del gioco.
 
@@ -439,9 +442,10 @@ void player::lifeshow(){
 	}
 }
 
-//Funzione per lo sparo. Il suo funzionamento è abbastanza complesso, riassuntivamento ciò che fa
-//è controllare la posizione del personagggio mentre spara e se un proiettile sta già venendo stampato
-//a schermo. In base a questi due booleani decide in che direzione far stampare il proiettile e se
+//Funzione per lo sparo. Il suo funzionamento è abbastanza complesso, riassumendo, ciò che fa
+//è controllare due variabili: la posizione del personagggio mentre spara (variabile dir) e
+//se un proiettile sta già venendo stampato a schermo (variabile s).
+//In base a questi due booleani decide in che direzione far stampare il proiettile e se
 //continuare l'animazione di un proiettile già stampato o stamparne uno nuovo
 void player::shoot(){
 	if(dir==true && s==false){
@@ -587,6 +591,9 @@ void* player::display(void * arg){
  * input=10
  * ritorna un booleano che indica se il giocatore sta saltando
  *
+ * input=11
+ * ritorna il numero di soldi del giocatore
+ *
  * altri input:
  * ritorna -1
  *
@@ -625,6 +632,9 @@ int player::playeroutput(int input){
 		break;
 	case 10:
 		return j;
+		break;
+	case 11:
+		return money;
 		break;
 	default:
 		return -1;
