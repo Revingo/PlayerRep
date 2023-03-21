@@ -429,7 +429,8 @@ void player::gravity(){
 	}
 }
 
-//Stampa il numero di vite restanti in alto a sinistra (!GRAFICA DA CAMBIARE!)
+//Stampa il numero di vite restanti in alto a sinistra. (!GRAFICA DA CAMBIARE!)
+//Inoltre è responsabile di diminuire la vita del giocatore.
 //Al momento non c'è una scermata di morte quindi il counter va in negativo
 void player::lifeshow(){
 	if(yLoc+1==yMax-1){
