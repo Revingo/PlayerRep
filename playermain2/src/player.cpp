@@ -41,7 +41,7 @@ player::player(WINDOW * win, int y, int x, char c){
 	//Indica se il giocatore sta saltando
 	j=false;
 
-	//Stampa un livello di prova. Puoi eliminare questa parte di codice fino a riga 62
+	//Stampa un livello di prova. Puoi eliminare questa parte di codice fino a riga 65
 	for(int xh=x; xh<xMax-9; xh++){
 		int yh=y+1;
 		mvwaddch(curwin, yh, xh, '#');
