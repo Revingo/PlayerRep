@@ -419,7 +419,7 @@ int player::move(){
 	return leftright();
 }
 
-//Controlla se sotto al giocatore c'è del terreno. Se non c'è né, lo muove verso il basso
+//Controlla se sotto al giocatore c'è del terreno. Se non ce n'è, lo muove verso il basso
 void player::gravity(){
 	while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false  && yLoc+1!=yMax-1){
 		mvdown();
