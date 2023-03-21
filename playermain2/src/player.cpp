@@ -38,6 +38,28 @@ player::player(WINDOW * win, int y, int x, char c){
 	//Indica se il giocatore sta saltando
 	j=false;
 
+	//Stampa un livello di prova. Puoi eliminare questa parte di codice fino a riga 62
+	for(int xh=x; xh<xMax-9; xh++){
+		int yh=y+1;
+		mvwaddch(curwin, yh, xh, '#');
+	}
+	for(int ym=y; ym>20; ym--){
+		int xm=17;
+		mvwaddch(curwin, ym, xm, '-');
+	}
+	for(int xh=15; xh>1; xh--){
+		int yh=21;
+		mvwaddch(curwin, yh, xh, '#');
+	}
+	for(int ym=y-1; ym>20; ym--){
+		int xm=16;
+		mvwaddch(curwin, ym, xm, '|');
+	}
+	for(int ym=y-1; ym>20; ym--){
+		int xm=18;
+		mvwaddch(curwin, ym, xm, '|');
+	}
+
 	//Stampa la vita del giocatore
 	mvwprintw(curwin, 0, 0,"HP: %d", life);
 }
@@ -165,6 +187,7 @@ void player::stairsdown(){
 //normale terreno o scale.
 void player::mvup(){
 	if(isterrain(mvwinch(curwin, yLoc-1, xLoc))==true)
+		return;
 	mvwaddch(curwin, yLoc, xLoc, ' ');
 	yLoc--;
 	if(yLoc<=0)
@@ -565,7 +588,7 @@ void* player::display(void * arg){
  * ritorna un booleano che indica se il giocatore sta saltando
  *
  * altri input:
- * ritorna NULL
+ * ritorna -1
  *
  */
 int player::playeroutput(int input){
@@ -604,7 +627,7 @@ int player::playeroutput(int input){
 		return j;
 		break;
 	default:
-		return NULL;
+		return -1;
 		break;
 
 	}
