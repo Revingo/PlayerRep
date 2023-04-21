@@ -4,12 +4,14 @@
 
 class player {
     protected:
-        int xLoc, yLoc, xMax, yMax, life, originx, originy, projx, projy, money;
+        int xLoc, yLoc, xMax, yMax, originx, originy, projx, projy;
         bool s, dir, dirlock, j;
         char character;
         WINDOW * curwin;
 
     public:
+        int money, life;
+
         player(WINDOW * win, int y, int x, char c);
 
         bool isterrain(char t);
