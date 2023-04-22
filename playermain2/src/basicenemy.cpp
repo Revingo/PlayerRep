@@ -9,8 +9,6 @@
 		 * Questa classe funziona ma è da migliorare e sono presenti alcuni bug che non ho ancora risolto quali:
 		 *
 		 * - P che spuntano apparentemente senza motivo nella mappa
-		 * - Proiettili che rompono scale (sconsigliato mettere i nemici di fianco a scale proprio per questo)
-		 * - Nemici che non ricevono sempre danno
 		 *
 		 * Se trovate modo di risolvere questi bug, ditemelo e modificherò la classe!
 		 */
@@ -34,6 +32,9 @@ basicenemy::basicenemy(WINDOW * win, int y, int x, int l, char e){
 
 	getmaxyx(curwin, yMax, xMax);
 	dirlock=0;
+
+	//setto rand
+	srand(time(0));
 }
 
 //Questo metodo serve a controllare se è presente un giocatore a una distanza massima di nove blocchi dal nemico
@@ -52,6 +53,7 @@ int basicenemy::playerfinder(){
 
 //mvright e mvleft muovono il nemico a destra o a sinistra
 void basicenemy::mvright(){
+	takedamage();
 	mvwaddch(curwin, yLoc, xLoc, ' ');
 	xLoc++;
 	if(xLoc>=xMax-1)
@@ -59,6 +61,7 @@ void basicenemy::mvright(){
 }
 
 void basicenemy::mvleft(){
+	takedamage();
 	mvwaddch(curwin, yLoc, xLoc, ' ');
 	xLoc--;
 	if(xLoc<=0)
@@ -66,19 +69,18 @@ void basicenemy::mvleft(){
 }
 
 //Funzione principale del nemico, che contiene la sua IA
-//Prima di tutto si assicura che il nemico sia vivo, dopodiché, dopo aver settato rand, controlla se è già stato sparato
-//un proiettile, in caso affermativo, continua a spararlo.
-//Se nessun proiettile sta venendo sparato, controlla se il giocatore è vicino al nemico, in caso affermativo, c'è una possibilità
-//di 1/2 che decida di sparare.
+//Prima di tutto controlla se è già stato sparato un proiettile, in caso affermativo, continua a spararlo, dopodichè si assicura
+//che il nemico sia vivo.
+//Successivamente controlla se il giocatore è vicino al nemico, in caso affermativo, c'è una possibilità
+//su due che decida di sparare.
 //Nel caso non ci sia nessun nemico, allora c'è una possibilità su tre che decida di muoversi in una direzione casuale.
 //I nemici non possono cadere
 void* basicenemy::behaviour(void*){
 
+	if(s==true)
+		shoot(dirlock);
 	if(life>0){
-		srand(time(0));
-		if(s==true)
-			shoot(dirlock);
-		else if(playerfinder()==0 && life>0){
+		if(playerfinder()==0 && life>0){
 			takedamage();
 			if(rand()%2==0)
 			shoot(0);
@@ -91,14 +93,26 @@ void* basicenemy::behaviour(void*){
 		else{
 			takedamage();
 			usleep(50000);
-			if(rand()%3==0 && (isterrain(mvwinch(curwin, yLoc+1, xLoc+1))==true && isterrain(mvwinch(curwin, yLoc, xLoc+1))==false)){
-				mvright();
-				display();
+			if(rand()%2==0 && (isterrain(mvwinch(curwin, yLoc+1, xLoc+1))==true)){
+				if(isterrain(mvwinch(curwin, yLoc, xLoc+1))==true){
+					mvleft();
+					display();
+				}
+				else if (isterrain(mvwinch(curwin, yLoc, xLoc-1))==false){
+					mvright();
+					display();
+				}
 			}
 
-			else if(rand()%3==1 && (isterrain(mvwinch(curwin, yLoc+1, xLoc-1))==true && isterrain(mvwinch(curwin, yLoc, xLoc-1))==false)){
-				mvleft();
-				display();
+			else if(rand()%2==1 && (isterrain(mvwinch(curwin, yLoc+1, xLoc-1))==true)){
+				if(isterrain(mvwinch(curwin, yLoc, xLoc-1))==true){
+					mvright();
+					display();
+				}
+				else if (isterrain(mvwinch(curwin, yLoc, xLoc+1))==false){
+					mvleft();
+					display();
+				}
 			}
 			return NULL;
 		}
@@ -109,7 +123,7 @@ void* basicenemy::behaviour(void*){
 
 //Controlla che il carattere in input sia considerato terreno o no
 bool basicenemy::isterrain(char t){
-	if(t=='#' || t=='-' || t=='|')
+	if(t=='#' || t=='-' || t=='|' || t=='e')
 		return true;
 	else
 		return false;
@@ -119,12 +133,6 @@ bool basicenemy::isterrain(char t){
 void basicenemy::takedamage(){
 	if(mvwinch(curwin, yLoc, xLoc-1)=='o' || mvwinch(curwin, yLoc, xLoc+1)=='o'){
 		mvwaddch(curwin, yLoc, xLoc, ' ');
-		usleep(5000);
-		mvwaddch(curwin, yLoc, xLoc, enemy);
-		wrefresh(curwin);
-		usleep(5000);
-		mvwaddch(curwin, yLoc, xLoc, ' ');
-		wrefresh(curwin);
 		life--;
 		if(mvwinch(curwin, yLoc, xLoc-1)=='o')
 			mvwaddch(curwin, yLoc, xLoc-1, ' ');
@@ -134,6 +142,8 @@ void basicenemy::takedamage(){
 			mvwaddch(curwin, yLoc, xLoc, enemy);
 			wrefresh(curwin);
 		}
+		else
+			enemy=' ';
 	}
 
 }
@@ -161,6 +171,8 @@ void basicenemy::shoot(int dir){
 		else{
 			mvwaddch(curwin, projy, projx+2, ' ');
 			s=false;
+			display();
+			wrefresh(curwin);
 		}
 	}
 	else if(dir==1 && s==false){
@@ -184,6 +196,8 @@ void basicenemy::shoot(int dir){
 		else{
 			mvwaddch(curwin, projy, projx-2, ' ');
 			s=false;
+			display();
+			wrefresh(curwin);
 		}
 
 	}
@@ -226,6 +240,6 @@ void basicenemy::shoot(int dir){
 
 //Funzione che stampa il nemico
 void basicenemy::display(){
-
 	mvwaddch(curwin, yLoc, xLoc, enemy);
+	takedamage();
 }

@@ -27,7 +27,7 @@ int main(int argc, char ** argv) {
 	//sintassi: (finestra, y dello spawn del nemico, x dello spawn del nemico, vita del nemico, icona del nemico (lasciala 'e'))
 	basicenemy * e1 = new basicenemy(pwin, yMax-3, 20, 1, 'e');
 
-	basicenemy * e2 = new basicenemy(pwin, yMax-3, 25, 3, 'e');
+	basicenemy * e2 = new basicenemy(pwin, yMax-3, 25, 1, 'e');
 
 	basicenemy * e3 = new basicenemy(pwin, yMax-3, 30, 3, 'e');
 
@@ -43,9 +43,13 @@ int main(int argc, char ** argv) {
 
 		pthread_create(&enemythread1, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e1);
 
+		//pthread_create(&enemythread2, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e2);
+
 		//Aspetta che il thread finisca di elaborare
 
 		pthread_join(enemythread1, NULL);
+
+		//pthread_join(enemythread2, NULL);
 
 		/*
 		 *      ___ ___  ___      __    __        ___
@@ -56,7 +60,7 @@ int main(int argc, char ** argv) {
 		 * Potrebbe comunque essere una buona idea se il gioco ha bug strani
 		 */
 
-		pthread_join(playerthread, NULL);
+		//pthread_join(playerthread, NULL);
 
 		//Refresha la finestra
 		wrefresh(pwin);
