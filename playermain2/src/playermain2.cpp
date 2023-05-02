@@ -25,37 +25,53 @@ int main(int argc, char ** argv) {
 	player * p = new player(pwin, yMax-3, 1, 'P');
 
 	//sintassi: (finestra, y dello spawn del nemico, x dello spawn del nemico, vita del nemico, icona del nemico (lasciala 'e'))
-	basicenemy * e1 = new basicenemy(pwin, yMax-3, 20, 1, 'e');
+	basicenemy * e1 = new basicenemy(pwin, yMax-3, 20, 1, 'e', 100);
 
-	basicenemy * e2 = new basicenemy(pwin, yMax-3, 25, 1, 'e');
+	basicenemy * e2 = new basicenemy(pwin, yMax-3, 25, 1, 'e', 100);
 
-	basicenemy * e3 = new basicenemy(pwin, yMax-3, 30, 3, 'e');
+	basicenemy * e3 = new basicenemy(pwin, yMax-3, 30, 3, 'e', 100);
+
+	jumpingenemy * e4 = new jumpingenemy (pwin, yMax-3, 35, 3, 'e', 300);
 
 	//Inizializzazione del thread giocatore e nemici
-	pthread_t playerthread, enemythread1, enemythread2, enemythread3;
+	pthread_t playerthread, enemythread1, enemythread2, enemythread3, enemythread4;
 
 	//pthread_attr_setguardsize(&playerthread, 3);
 
-	e1->display();
+	int contmoney=0;
+	//e1->display();
+	e4->display();
 	do{
+
+		if(e4->life==0 && contmoney==0){
+			p->money=p->money+e4->money;
+			contmoney++;
+		}
+
 		//Creazione del thread
 		pthread_create(&playerthread, NULL, (THREADFUNCPTR) &player::display, p);
 
-		pthread_create(&enemythread1, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e1);
+		//pthread_create(&enemythread1, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e1);
 
 		//pthread_create(&enemythread2, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e2);
 
+		pthread_create(&enemythread4, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e4);
+
 		//Aspetta che il thread finisca di elaborare
 
-		pthread_join(enemythread1, NULL);
+		//pthread_join(enemythread1, NULL);
 
 		//pthread_join(enemythread2, NULL);
 
+		pthread_join(enemythread4, NULL);
+
+
+
 		/*
-		 *      ___ ___  ___      __    __        ___
+		        ___ ___  ___      __    __        ___
  	 	 	/\   |   |  |__  |\ |  / | /  \ |\ | |__
-		 * /~~\  |   |  |___ | \| /_ | \__/ | \| |___
-		 *
+		   /~~\  |   |  |___ | \| /_ | \__/ | \| |___
+
 		 * Potete provare a eliminare "pthread_join(playerthread, NULL)" ma non è assicurato funzioni
 		 * Potrebbe comunque essere una buona idea se il gioco ha bug strani
 		 */
