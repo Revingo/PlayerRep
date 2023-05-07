@@ -104,6 +104,7 @@ void* basicenemy::behaviour(void*){
 			else{
 				usleep(50000);
 				wrefresh(curwin);
+				return NULL;
 			}
 			return NULL;
 		}
@@ -242,6 +243,64 @@ void basicenemy::display(){
  *
  */
 
+void* jumpingenemy::behaviour(void*){
+
+	if(s==true){
+		shoot(dirlock);
+		return NULL;
+	}
+	if(life>0){
+		gravity();
+		if((playerfinder()==0 || playerfinder()==1) && life>0 && rand()%difficulty==0){
+			takedamage();
+			shoot(playerfinder());
+		}
+		if((bulletfinder()==0 || bulletfinder()==1) && s==false && rand()%difficulty==0){
+			jump(bulletfinder());
+		}
+		else{
+			takedamage();
+			if(rand()%5==0){
+				if(isterrain(mvwinch(curwin, yLoc, xLoc+1))==true){
+					mvleft();
+					display();
+					usleep(50000);
+					wrefresh(curwin);
+				}
+				else{
+					mvright();
+					display();
+					usleep(50000);
+					wrefresh(curwin);
+				}
+			}
+
+			else if(rand()%5==1){
+				if(isterrain(mvwinch(curwin, yLoc, xLoc-1))==true){
+					mvright();
+					display();
+					usleep(50000);
+					wrefresh(curwin);
+				}
+				else{
+					mvleft();
+					display();
+					usleep(50000);
+					wrefresh(curwin);
+				}
+			}
+			else{
+				usleep(50000);
+				wrefresh(curwin);
+				return NULL;
+			}
+			return NULL;
+		}
+	}
+	else
+		return NULL;
+}
+
 void jumpingenemy::mvup(){
 	if(isterrain(mvwinch(curwin, yLoc-1, xLoc))==true)
 		return;
@@ -258,6 +317,26 @@ void jumpingenemy::mvdown(){
 	yLoc++;
 	if(yLoc>=yMax-1)
 		yLoc=yMax-2;
+}
+
+void jumpingenemy::mvright(){
+	takedamage();
+	if(isterrain(mvwinch(curwin, yLoc, xLoc+1))==true)
+		return;
+	mvwaddch(curwin, yLoc, xLoc, ' ');
+	xLoc++;
+	if(xLoc>=xMax-1)
+		xLoc=xMax-2;
+}
+
+void jumpingenemy::mvleft(){
+	takedamage();
+	if(isterrain(mvwinch(curwin, yLoc, xLoc-1))==true)
+		return;
+	mvwaddch(curwin, yLoc, xLoc, ' ');
+	xLoc--;
+	if(xLoc<=0)
+		xLoc=1;
 }
 
 void jumpingenemy::gravity(){
@@ -310,8 +389,17 @@ void jumpingenemy::takedamage(){
 	}
 }
 
-void jumpingenemy::jump(bool dir){
-	if(dir==true){
+int jumpingenemy::bulletfinder(){
+	if(mvwinch(curwin, yLoc, xLoc-1)=='o' || mvwinch(curwin, yLoc, xLoc-2)=='o' || mvwinch(curwin, yLoc, xLoc-3)=='o')
+		return 0;
+	else if (mvwinch(curwin, yLoc, xLoc+1)=='o' || mvwinch(curwin, yLoc, xLoc+2)=='o' || mvwinch(curwin, yLoc, xLoc+3)=='o')
+		return 1;
+	else
+		return 2;
+}
+
+void jumpingenemy::jump(int dir){
+	if(dir==0){
 		j=true;
 		for(int cont = 0; cont < 10; cont++){
 			mvup();
@@ -324,6 +412,7 @@ void jumpingenemy::jump(bool dir){
 			wrefresh(curwin);
 		}
 		while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false && yLoc+1!=yMax-1){
+			mvdown();
 			display();
 			usleep(10000);
 			wrefresh(curwin);

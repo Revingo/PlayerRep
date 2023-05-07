@@ -46,14 +46,19 @@ public:
 class jumpingenemy: public basicenemy{
 protected:
 	bool j=false;
+	int difficulty;
 public:
-	jumpingenemy(WINDOW * win, int y, int x, int l, char e, int m) : basicenemy(win, y, x, l, e, m){
+	jumpingenemy(WINDOW * win, int y, int x, int l, char e, int m, int d) : basicenemy(win, y, x, l, e, m){
 		j=false;
+		difficulty=d;
 	}
 	void mvup();
 	void mvdown();
+	void mvleft();
+	void mvright();
 	int playerfinder();
-    void jump(bool dir);
+	int bulletfinder();
+    void jump(int dir);
 	void* behaviour(void*);
     void takedamage();
     void gravity();

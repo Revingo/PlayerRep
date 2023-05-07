@@ -4,6 +4,8 @@
 //Costruttore della classe
 player::player(WINDOW * win, int y, int x, char c){
 	curwin = win;
+	nodelay(curwin, TRUE);
+
 	yLoc=y;
 	xLoc = x;
 
@@ -40,29 +42,6 @@ player::player(WINDOW * win, int y, int x, char c){
 
 	//Indica se il giocatore sta saltando
 	j=false;
-
-	//Stampa un livello di prova. Puoi eliminare questa parte di codice fino a riga 65
-	for(int xh=x; xh<xMax-9; xh++){
-		int yh=y+1;
-		mvwaddch(curwin, yh, xh, '#');
-	}
-	for(int ym=y; ym>20; ym--){
-		int xm=17;
-		mvwaddch(curwin, ym, xm, '-');
-	}
-	for(int xh=15; xh>1; xh--){
-		int yh=21;
-		mvwaddch(curwin, yh, xh, '#');
-	}
-	for(int ym=y-1; ym>20; ym--){
-		int xm=16;
-		mvwaddch(curwin, ym, xm, '|');
-	}
-	for(int ym=y-1; ym>20; ym--){
-		int xm=18;
-		mvwaddch(curwin, ym, xm, '|');
-	}
-	//mvwaddch(curwin, yMax-3, 25, 'o');
 
 	//Stampa la vita del giocatore
 	mvwprintw(curwin, 0, 0,"HP: %d", life);
