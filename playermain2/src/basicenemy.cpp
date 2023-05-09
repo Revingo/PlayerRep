@@ -48,6 +48,15 @@ void basicenemy::mvleft(){
 		xLoc=1;
 }
 
+void basicenemy::mvdown(){
+	if(isterrain(mvwinch(curwin, yLoc+1, xLoc))==true)
+		return;
+	mvwaddch(curwin, yLoc, xLoc, ' ');
+	yLoc++;
+	if(yLoc>=yMax-1)
+		yLoc=yMax-2;
+}
+
 //Funzione principale del nemico, che contiene la sua IA
 //Prima di tutto controlla se è già stato sparato un proiettile, in caso affermativo, continua a spararlo, dopodichè si assicura
 //che il nemico sia vivo.
@@ -138,6 +147,16 @@ void basicenemy::takedamage(){
 			enemy=' ';
 	}
 }
+
+void basicenemy::gravity(){
+	while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false && yLoc+1!=yMax-1){
+		mvdown();
+		display();
+		usleep(42000);
+		wrefresh(curwin);
+	}
+}
+
 
 //Funzione dello sparo molto simile a quella del giocatore
 void basicenemy::shoot(int dir){
@@ -310,15 +329,6 @@ void jumpingenemy::mvup(){
 		yLoc=1;
 }
 
-void jumpingenemy::mvdown(){
-	if(isterrain(mvwinch(curwin, yLoc+1, xLoc))==true)
-		return;
-	mvwaddch(curwin, yLoc, xLoc, ' ');
-	yLoc++;
-	if(yLoc>=yMax-1)
-		yLoc=yMax-2;
-}
-
 void jumpingenemy::mvright(){
 	takedamage();
 	if(isterrain(mvwinch(curwin, yLoc, xLoc+1))==true)
@@ -337,15 +347,6 @@ void jumpingenemy::mvleft(){
 	xLoc--;
 	if(xLoc<=0)
 		xLoc=1;
-}
-
-void jumpingenemy::gravity(){
-	while(isterrain(mvwinch(curwin, yLoc+1, xLoc))==false && yLoc+1!=yMax-1){
-		mvdown();
-		display();
-		usleep(42000);
-		wrefresh(curwin);
-	}
 }
 
 //Questo metodo serve a controllare se è presente un giocatore a una distanza massima di nove blocchi dal nemico
