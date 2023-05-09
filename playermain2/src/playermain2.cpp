@@ -26,7 +26,7 @@ int main(int argc, char ** argv) {
 	player * p = new player(pwin, yMax-3, 1, 'P');
 
 	//sintassi: (finestra, y dello spawn del nemico, x dello spawn del nemico, vita del nemico, icona del nemico (lasciala 'e'), soldi rilasciati alla morte)
-	basicenemy * e1 = new basicenemy(pwin, yMax-3, 20, 1, 'e', 100);
+	basicenemy * e1 = new basicenemy(pwin, yMax-10, 20, 1, 'e', 100);
 
 	basicenemy * e2 = new basicenemy(pwin, yMax-3, 25, 1, 'e', 100);
 
@@ -41,8 +41,8 @@ int main(int argc, char ** argv) {
 	pthread_t playerthread, enemythread1, enemythread2, enemythread3, enemythread4;
 
 	int contmoney=0;
-	//e1->display();
-	e4->display();
+	e1->display();
+	//e4->display();
 	do{
 
 		if(e4->life==0 && contmoney==0){
@@ -53,19 +53,19 @@ int main(int argc, char ** argv) {
 		//Creazione del thread
 		pthread_create(&playerthread, NULL, (THREADFUNCPTR) &player::display, p);
 
-		//pthread_create(&enemythread1, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e1);
+		pthread_create(&enemythread1, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e1);
 
 		//pthread_create(&enemythread2, NULL, (THREADFUNCPTR) &basicenemy::behaviour, e2);
 
-		pthread_create(&enemythread4, NULL, (THREADFUNCPTR) &jumpingenemy::behaviour, e4);
+		//pthread_create(&enemythread4, NULL, (THREADFUNCPTR) &jumpingenemy::behaviour, e4);
 
 		//Aspetta che il thread finisca di elaborare
 
-		//pthread_join(enemythread1, NULL);
+		pthread_join(enemythread1, NULL);
 
 		//pthread_join(enemythread2, NULL);
 
-		pthread_join(enemythread4, NULL);
+		//pthread_join(enemythread4, NULL);
 
 
 

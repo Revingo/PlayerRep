@@ -69,6 +69,7 @@ void* basicenemy::behaviour(void*){
 	if(s==true)
 		shoot(dirlock);
 	if(life>0){
+		gravity();
 		if(playerfinder()==0 && life>0){
 			takedamage();
 			if(rand()%2==0)
@@ -448,4 +449,20 @@ void jumpingenemy::jump(int dir){
 		}
 		j=false;
 	}
+}
+
+basicenemy* basic_enemy_randomizer (basicenemy* e1, basicenemy* e2, basicenemy* e3){
+	if(rand()%3==0)
+		return e1;
+	else if(rand()%3==1)
+		return e2;
+	else
+		return e3;
+}
+
+jumpingenemy* jumping_enemy_randomizer (jumpingenemy* e){
+	if(rand()%4==0)
+		return e;
+	else
+		return NULL;
 }
