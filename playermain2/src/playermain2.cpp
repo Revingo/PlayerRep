@@ -8,14 +8,6 @@ using namespace std;
 
 typedef void * (*THREADFUNCPTR)(void *);
 
-basicenemy* basicen_choose (int n, basicenemy* e[]){
-	return e[rand()%n];
-}
-
-jumpingenemy* jumpingen_choose (int n, jumpingenemy* e[]){
-	return e[rand()%n];
-}
-
 int main(int argc, char ** argv) {
 	initscr();
 	noecho();
