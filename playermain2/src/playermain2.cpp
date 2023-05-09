@@ -3,9 +3,18 @@
 #include "basicenemy.hpp"
 #include <iostream>
 #include <pthread.h>
+#include<unistd.h>
 using namespace std;
 
 typedef void * (*THREADFUNCPTR)(void *);
+
+basicenemy* basicen_choose (int n, basicenemy* e[]){
+	return e[rand()%n];
+}
+
+jumpingenemy* jumpingen_choose (int n, jumpingenemy* e[]){
+	return e[rand()%n];
+}
 
 int main(int argc, char ** argv) {
 	initscr();
@@ -35,6 +44,17 @@ int main(int argc, char ** argv) {
 	//soldi rilasciati alla morte, difficoltà del nemico !PIU IL NUMERO E' BASSO PIU E' DIFFICILE! (non usare numeri negativi)
 	//sconsiglio di scendere sotto a 3)
 	jumpingenemy * e4 = new jumpingenemy (pwin, yMax-3, 35, 3, 'e', 600, 4);
+
+	srand(time(0));
+
+	basicenemy * f = new basicenemy(pwin, yMax-3, 20, 1, 'e', 100);
+
+	if(rand()%3==0)
+		f = e1;
+	else if(rand()%3==1)
+		f = e2;
+	else
+		f = e3;
 
 	//Inizializzazione del thread giocatore e nemici
 	pthread_t playerthread, enemythread1, enemythread2, enemythread3, enemythread4;
