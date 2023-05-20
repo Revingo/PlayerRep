@@ -10,7 +10,7 @@ protected:
 	WINDOW * curwin;
 public:
 	int life, money;
-	basicenemy(WINDOW * win, int y, int x, int l, char e, int m){
+	basicenemy(WINDOW * win, int y=20, int x=20, int l=1, char e='e', int m=100){
 		curwin=win;
 		yLoc=y;
 		xLoc=x;
@@ -50,7 +50,7 @@ protected:
 	bool j=false;
 	int difficulty;
 public:
-	jumpingenemy(WINDOW * win, int y, int x, int l, char e, int m, int d) : basicenemy(win, y, x, l, e, m){
+	jumpingenemy(WINDOW * win, int y=20, int x=20, int l=3, char e='e', int m=300, int d=4) : basicenemy(win, y, x, l, e, m){
 		j=false;
 		difficulty=d;
 	}

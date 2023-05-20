@@ -1,58 +1,11 @@
 
 #include "player.hpp"
 
-//Costruttore della classe
-player::player(WINDOW * win, int y, int x, char c){
-	curwin = win;
-	nodelay(curwin, TRUE);
 
-	yLoc=y;
-	xLoc = x;
-
-	//Coordinata y dello spawn del giocatore
-	originy=y;
-
-	//Coordinata x dello spawn del giocatore
-	originx=x;
-
-	getmaxyx(curwin, yMax, xMax);
-	keypad(curwin, true);
-	character=c;
-
-	//Vita del giocatore
-	life=3;
-
-	//Soldi del giocatore (al momento inutilizzata)
-	money=0;
-
-	//Indica le y del proiettile
-	projy=y;
-
-	//Indica le x del proiettile
-	projx=x;
-
-	//Indica se un proiettile sta venendo disegnato
-	s=false;
-
-	//Indica l'ultima direzione in cui il giocatore è andato
-	dir=false;
-
-	//Blocca la direzione del proiettile
-	dirlock=false;
-
-	//Indica se il giocatore sta saltando
-	j=false;
-
-	//Stampa la vita del giocatore
-	mvwprintw(curwin, 0, 0,"HP: %d", life);
-
-	//Stampa i soldi del giocatore
-	mvwprintw(curwin, 0, xMax-20,"soldi: %d", money);
-}
 
 //ritorna true se il char in input è considerabile terreno, false atrimenti
 bool player::isterrain(char t){
-	if(t=='#' || t=='-' || t=='|' || t=='e')
+	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='{' || t=='[' || t==']' || t=='}')
 		return true;
 	else
 		return false;
@@ -348,7 +301,7 @@ void player::jump(){
 //Funzione che serve a prendere l'input del giocatore.
 //Inoltre richiama lifeshow() ogni volta che viene richiamata.
 int player::leftright(){
-	mvwprintw(curwin, 0, xMax-20,"soldi: %d", money);
+	mvwprintw(curwin, 0, xMax-10,"COINS: %d", money);
 	lifeshow();
 
 	if(s==true)

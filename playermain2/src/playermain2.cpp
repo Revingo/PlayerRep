@@ -45,6 +45,7 @@ int main(int argc, char ** argv) {
 	//e4->display();
 	do{
 
+		//contmoney++ serve a far si che le monete vengano aggiunte una volta sola
 		if(e4->life==0 && contmoney==0){
 			p->money+=e4->money;
 			contmoney++;
@@ -70,10 +71,10 @@ int main(int argc, char ** argv) {
 
 
 		/*
-		        ___ ___  ___      __    __        ___
- 	 	 	/\   |   |  |__  |\ |  / | /  \ |\ | |__
-		   /~~\  |   |  |___ | \| /_ | \__/ | \| |___
-
+		 *      ___ ___  ___      __    __        ___
+		 *  /\   |   |  |__  |\ |  / | /  \ |\ | |__
+ 	 	 * /~~\  |   |  |___ | \| /_ | \__/ | \| |___
+		 *
 		 * Potete provare a eliminare "pthread_join(playerthread, NULL)" ma non è assicurato funzioni
 		 * Potrebbe comunque essere una buona idea se il gioco ha bug strani
 		 */

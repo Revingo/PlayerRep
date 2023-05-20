@@ -3,7 +3,7 @@
 
 		/*
 		 *      ___ ___  ___      __    __        ___
- 	 	 	/\   |   |  |__  |\ |  / | /  \ |\ | |__
+		 *  /\   |   |  |__  |\ |  / | /  \ |\ | |__
 		 * /~~\  |   |  |___ | \| /_ | \__/ | \| |___
 		 *
 		 * Questa classe funziona ma è da migliorare e sono presenti alcuni bug che non ho ancora risolto quali:
@@ -12,6 +12,25 @@
 		 *
 		 * Se trovate modo di risolvere questi bug, ditemelo e modificherò la classe!
 		 */
+
+//Prende in input tre basicenemy e ne rilascia uno casualmente
+basicenemy* basic_enemy_randomizer (basicenemy* e1, basicenemy* e2, basicenemy* e3){
+	if(rand()%3==0)
+		return e1;
+	else if(rand()%3==1)
+		return e2;
+	else
+		return e3;
+}
+
+//Una possibilità su quattro esca jumping enemy, nel caso esca, rilascia in output e, in caso cotrario
+//rilascia NULL
+jumpingenemy* jumping_enemy_randomizer (jumpingenemy* e){
+	if(rand()%3==0)
+		return e;
+	else
+		return NULL;
+}
 
 //Questo metodo serve a controllare se è presente un giocatore a una distanza massima di nove blocchi dal nemico
 int basicenemy::playerfinder(){
@@ -125,7 +144,7 @@ void* basicenemy::behaviour(void*){
 
 //Controlla che il carattere in input sia considerato terreno o no
 bool basicenemy::isterrain(char t){
-	if(t=='#' || t=='-' || t=='|' || t=='e')
+	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='{' || t=='[' || t==']' || t=='}')
 		return true;
 	else
 		return false;
@@ -449,20 +468,4 @@ void jumpingenemy::jump(int dir){
 		}
 		j=false;
 	}
-}
-
-basicenemy* basic_enemy_randomizer (basicenemy* e1, basicenemy* e2, basicenemy* e3){
-	if(rand()%3==0)
-		return e1;
-	else if(rand()%3==1)
-		return e2;
-	else
-		return e3;
-}
-
-jumpingenemy* jumping_enemy_randomizer (jumpingenemy* e){
-	if(rand()%4==0)
-		return e;
-	else
-		return NULL;
 }
