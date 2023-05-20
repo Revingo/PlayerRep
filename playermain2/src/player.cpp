@@ -12,7 +12,14 @@ bool player::isterrain(char t){
 }
 
 bool player::bulletterrain(char t){
-	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='{' || t=='[' || t==']' || t=='}')
+	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='{' || t=='[' || t==']' || t=='}' || t=='(' || t==')')
+		return true;
+	else
+		return false;
+}
+
+bool player::isenemy(char t){
+	if(t=='e' || t=='E' || t=='j' || t=='J' || t=='&' || t=='<')
 		return true;
 	else
 		return false;
@@ -141,7 +148,7 @@ void player::mvup(){
 }
 
 void player::mvdown(){
-	if(mvwinch(curwin, yLoc+1, xLoc)=='#' || mvwinch(curwin, yLoc+1, xLoc)=='|' || mvwinch(curwin, yLoc, xLoc+1)=='e')
+	if(mvwinch(curwin, yLoc+1, xLoc)=='#' || mvwinch(curwin, yLoc+1, xLoc)=='|' || isenemy(mvwinch(curwin, yLoc+1, xLoc))==true)
 		return;
 	if(mvwinch(curwin, yLoc+1, xLoc)=='-')
 		stairsdown();
@@ -152,7 +159,7 @@ void player::mvdown(){
 }
 
 void player::mvright(){
-	if(mvwinch(curwin, yLoc, xLoc+1)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='|' || mvwinch(curwin, yLoc, xLoc+1)=='e')
+	if(mvwinch(curwin, yLoc, xLoc+1)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='|' || isenemy(mvwinch(curwin, yLoc, xLoc+1))==true)
 		return;
 	if(mvwinch(curwin, yLoc, xLoc+1)=='-')
 		stairsup();
@@ -163,7 +170,7 @@ void player::mvright(){
 }
 
 void player::mvleft(){
-	if(mvwinch(curwin, yLoc, xLoc-1)=='#' || mvwinch(curwin, yLoc, xLoc-1)=='|' || mvwinch(curwin, yLoc, xLoc-1)=='e')
+	if(mvwinch(curwin, yLoc, xLoc-1)=='#' || mvwinch(curwin, yLoc, xLoc-1)=='|' || isenemy(mvwinch(curwin, yLoc, xLoc-1))==true)
 		return;
 	if(mvwinch(curwin, yLoc, xLoc-1)=='-')
 		stairsup();
@@ -417,7 +424,7 @@ void player::shoot(){
 			if(j==false)
 				gravity();
 		}
-		else if(mvwinch(curwin, projy, projx-1)=='e'){
+		else if(isenemy(mvwinch(curwin, projy, projx-1))==true){
 			s=false;
 			return;
 		}
@@ -449,7 +456,7 @@ void player::shoot(){
 			if(j==false)
 				gravity();
 		}
-		else if(mvwinch(curwin, projy, projx+1)=='e'){
+		else if(isenemy(mvwinch(curwin, projy, projx+1))==true){
 			s=false;
 			return;
 		}
@@ -475,7 +482,7 @@ void player::shoot(){
 			if(j==false)
 				gravity();
 		}
-		else if(mvwinch(curwin, projy, projx-1)=='e'){
+		else if(isenemy(mvwinch(curwin, projy, projx-1))==true){
 			s=false;
 			return;
 		}
@@ -499,7 +506,7 @@ void player::shoot(){
 			if(j==false)
 				gravity();
 		}
-		else if(mvwinch(curwin, projy, projx+1)=='e'){
+		else if(isenemy(mvwinch(curwin, projy, projx+1))==true){
 			s=false;
 			return;
 		}

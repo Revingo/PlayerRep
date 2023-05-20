@@ -144,7 +144,7 @@ void* basicenemy::behaviour(void*){
 
 //Controlla che il carattere in input sia considerato terreno o no
 bool basicenemy::isterrain(char t){
-	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='{' || t=='[' || t==']' || t=='}')
+	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='{' || t=='[' || t==']' || t=='}' || t=='(' || t==')')
 		return true;
 	else
 		return false;

@@ -63,6 +63,7 @@ class player {
 
         bool isterrain(char t);
         bool bulletterrain(char t);
+        bool isenemy(char t);
         void mvup();
         void mvdown();
         void mvleft();
