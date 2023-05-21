@@ -276,6 +276,72 @@ void basicenemy::display(){
 
 
 
+//Funzione che ritorna una variabile della classe, utile per il salvataggio o operazioni di debug
+
+//Output in base al numero in input:
+/*
+ * input=0
+ * ritorna la coordinata y del nemico
+ *
+ * input=1
+ * ritorna la coordinata x del nemico
+ *
+ * input=2
+ * ritorna la vita del giocatore
+ *
+ * input=3
+ * ritorna la coordinata y del proiettile
+ *
+ * input=4
+ * ritorna la coordinata x del proiettile
+ *
+ * input=5
+ * ritorna un booleano che indica se il proiettile sta venendo disegnato
+ *
+ * input=6
+ * ritorna l'ultima direzione in cui il nemico ha sparato
+ *
+ * input=7
+ * ritorna il numero di soldi che rilascia il nemico
+ *
+ * altri input:
+ * ritorna -1
+ *
+ */
+int basicenemy::enemyoutput(int input){
+	switch(input){
+	case 0:
+		return yLoc;
+		break;
+	case 1:
+		return xLoc;
+		break;
+	case 2:
+		return life;
+		break;
+	case 3:
+		return projy;
+		break;
+	case 4:
+		return projx;
+		break;
+	case 5:
+		return s;
+		break;
+	case 6:
+		return dirlock;
+		break;
+	case 7:
+		return money;
+		break;
+	default:
+		return -1;
+		break;
+
+	}
+}
+
+
 /*
  *
  * SOTTOCLASSE JUMPING ENEMY
@@ -467,5 +533,76 @@ void jumpingenemy::jump(int dir){
 			wrefresh(curwin);
 		}
 		j=false;
+	}
+}
+
+//Funzione che ritorna una variabile della classe, utile per il salvataggio o operazioni di debug
+
+//Output in base al numero in input:
+/*
+ * input=0
+ * ritorna la coordinata y del nemico
+ *
+ * input=1
+ * ritorna la coordinata x del nemico
+ *
+ * input=2
+ * ritorna la vita del giocatore
+ *
+ * input=3
+ * ritorna la coordinata y del proiettile
+ *
+ * input=4
+ * ritorna la coordinata x del proiettile
+ *
+ * input=5
+ * ritorna un booleano che indica se il proiettile sta venendo disegnato
+ *
+ * input=6
+ * ritorna l'ultima direzione in cui il nemico ha sparato
+ *
+ * input=7
+ * ritorna il numero di soldi che rilascia il nemico
+ *
+ * input=8
+ * ritorna un booleano che indica se il nemico sta saltando
+ *
+ * altri input:
+ * ritorna -1
+ *
+ */
+int jumpingenemy::enemyoutput(int input){
+	switch(input){
+	case 0:
+		return yLoc;
+		break;
+	case 1:
+		return xLoc;
+		break;
+	case 2:
+		return life;
+		break;
+	case 3:
+		return projy;
+		break;
+	case 4:
+		return projx;
+		break;
+	case 5:
+		return s;
+		break;
+	case 6:
+		return dirlock;
+		break;
+	case 7:
+		return money;
+		break;
+	case 8:
+		return j;
+		break;
+	default:
+		return -1;
+		break;
+
 	}
 }

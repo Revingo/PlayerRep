@@ -43,6 +43,7 @@ public:
     bool isterrain(char t);
     void takedamage();
     void gravity();
+    int enemyoutput(int input);
 };
 
 class jumpingenemy: public basicenemy{
@@ -62,6 +63,7 @@ public:
     void jump(int dir);
 	void* behaviour(void*);
     void takedamage();
+    int enemyoutput(int input);
 
 };
 
