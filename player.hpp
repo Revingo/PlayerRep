@@ -56,9 +56,6 @@ class player {
 
         	//Stampa la vita del giocatore
         	mvwprintw(curwin, 0, 0,"HP: %d", life);
-
-        	//Stampa i soldi del giocatore
-        	mvwprintw(curwin, 0, xMax-20,"soldi: %d", money);
         }
 
         bool isterrain(char t);

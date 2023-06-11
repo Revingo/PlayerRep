@@ -148,7 +148,7 @@ void player::mvup(){
 }
 
 void player::mvdown(){
-	if(mvwinch(curwin, yLoc+1, xLoc)=='#' || mvwinch(curwin, yLoc+1, xLoc)=='|' || isenemy(mvwinch(curwin, yLoc+1, xLoc))==true)
+	if(mvwinch(curwin, yLoc+1, xLoc)=='#' || mvwinch(curwin, yLoc+1, xLoc)=='|' || mvwinch(curwin, yLoc, xLoc-1)=='[' || mvwinch(curwin, yLoc, xLoc-1)==']' ||  isenemy(mvwinch(curwin, yLoc+1, xLoc))==true)
 		return;
 	if(mvwinch(curwin, yLoc+1, xLoc)=='-')
 		stairsdown();
@@ -159,7 +159,7 @@ void player::mvdown(){
 }
 
 void player::mvright(){
-	if(mvwinch(curwin, yLoc, xLoc+1)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='|' || isenemy(mvwinch(curwin, yLoc, xLoc+1))==true)
+	if(mvwinch(curwin, yLoc, xLoc+1)=='#' || mvwinch(curwin, yLoc, xLoc+1)=='|' || mvwinch(curwin, yLoc, xLoc-1)=='[' || mvwinch(curwin, yLoc, xLoc-1)==']' ||  isenemy(mvwinch(curwin, yLoc, xLoc+1))==true)
 		return;
 	if(mvwinch(curwin, yLoc, xLoc+1)=='-')
 		stairsup();
@@ -170,7 +170,7 @@ void player::mvright(){
 }
 
 void player::mvleft(){
-	if(mvwinch(curwin, yLoc, xLoc-1)=='#' || mvwinch(curwin, yLoc, xLoc-1)=='|' || isenemy(mvwinch(curwin, yLoc, xLoc-1))==true)
+	if(mvwinch(curwin, yLoc, xLoc-1)=='#' || mvwinch(curwin, yLoc, xLoc-1)=='|' || mvwinch(curwin, yLoc, xLoc-1)=='[' || mvwinch(curwin, yLoc, xLoc-1)==']' || isenemy(mvwinch(curwin, yLoc, xLoc-1))==true)
 		return;
 	if(mvwinch(curwin, yLoc, xLoc-1)=='-')
 		stairsup();
