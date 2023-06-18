@@ -362,7 +362,6 @@ void game_flow(int y_scr, int x_scr, WINDOW* map, class BOX box,
         }
 
         mvwprintw(map, 0, (x_scr/4)+5, "SCORE: %d", game_scr);
-        mvwprintw(map, 0, (x_scr/4)-15,"debug_d: %f", difficulty_upgrade);
 
 		refresh();
 		wrefresh(map);
