@@ -140,7 +140,13 @@ bool basicenemy::isterrain(char t){
 
 //Funzione che fa si che il nemico prenda danno
 void basicenemy::takedamage(){
-	if(mvwinch(curwin, yLoc, xLoc-1)=='o' || mvwinch(curwin, yLoc, xLoc+1)=='o'){
+	if(yLoc+1==yMax-1){
+		enemy=' ';
+		life=0;
+		mvwaddch(curwin, yLoc, xLoc, ' ');
+		wrefresh(curwin);
+	}
+	else if(mvwinch(curwin, yLoc, xLoc-1)=='o' || mvwinch(curwin, yLoc, xLoc+1)=='o'){
 		mvwaddch(curwin, yLoc, xLoc, ' ');
 		life--;
 		if(mvwinch(curwin, yLoc, xLoc-1)=='o')
@@ -439,29 +445,6 @@ int jumpingenemy::playerfinder(){
 		return 1;
 	else
 		return 2;
-}
-
-void jumpingenemy::takedamage(){
-	if(yLoc+1==yMax-1){
-		enemy=' ';
-		life=0;
-		mvwaddch(curwin, yLoc, xLoc, ' ');
-		wrefresh(curwin);
-	}
-	else if(mvwinch(curwin, yLoc, xLoc-1)=='o' || mvwinch(curwin, yLoc, xLoc+1)=='o'){
-		mvwaddch(curwin, yLoc, xLoc, ' ');
-		life--;
-		if(mvwinch(curwin, yLoc, xLoc-1)=='o')
-			mvwaddch(curwin, yLoc, xLoc-1, ' ');
-		else
-			mvwaddch(curwin, yLoc, xLoc+1, ' ');
-		if(life>0){
-			mvwaddch(curwin, yLoc, xLoc, enemy);
-			wrefresh(curwin);
-		}
-		else
-			enemy=' ';
-	}
 }
 
 int jumpingenemy::bulletfinder(){

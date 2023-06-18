@@ -32,9 +32,9 @@ void buy_MagicPotion(player* player){
 
 int buy_Artifact(player* player){
     if(!check_Currency(player->Artifact_Price, player)){
-        int score =150;
-        player->life=player->life+1;
+        player->life=player->life+2;
         player->money=(player->money)-(player->Artifact_Price);
-        player->Artifact_Price=player->Artifact_Price+10;
+        player->Artifact_Price=player->Artifact_Price+50;
+        return 150;
     }
 }

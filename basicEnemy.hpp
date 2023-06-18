@@ -4,7 +4,7 @@
 
 class basicenemy{
 protected:
-	int yLoc, xLoc, yMax, xMax, projy, projx, dirlock;
+	int yLoc, xLoc, yMax, xMax, projy, projx, dirlock, enemyID;
 	bool s;
 	char enemy;
 	WINDOW * curwin;
@@ -19,6 +19,8 @@ public:
 		life=l;
 		enemy=e;
 		money=m;
+
+		enemyID=(int)e;
 
 		//Indica se si sta sparando un proiettile
 		s=false;
@@ -62,7 +64,6 @@ public:
 	int bulletfinder();
     void jump(int dir);
 	void* behaviour(void*);
-    void takedamage();
     int enemyoutput(int input);
 
 };

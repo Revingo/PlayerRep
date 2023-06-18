@@ -12,7 +12,7 @@ bool player::isterrain(char t){
 }
 
 bool player::bulletterrain(char t){
-	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='{' || t=='[' || t==']' || t=='}' || t=='(' || t==')')
+	if(t=='#' || t=='-' || t=='|' || t=='e' || t=='E' || t=='j' || t=='J' || t=='&' || t=='<' || t=='{' || t=='[' || t==']' || t=='}' || t=='(' || t==')')
 		return true;
 	else
 		return false;
@@ -183,10 +183,6 @@ void player::mvleft(){
 //Funzione per il salto. E' connessa con la funzione shoot() per permettere di saltare mentre
 //il proiettile sta venendo disegnato.
 //Ho aumentato l'ampiezza del salto e la sua velocità per migliorare il feeling del gioco.
-
-//!IDEA PER UN POTENZIAMENTO!
-//Si potrebbe cambiare l'ampiezza del salto con una semplice variabile, essendo che questa è controllata
-//da un contatore.
 void player::jump(){
 	if(dir==true && s==false){
 		j=true;
@@ -353,9 +349,8 @@ int player::leftright(){
 	//Spara se non ci sono altri proiettili sullo schermo e se
 	//il giocatore non sta saltando.
 
-	//Per chiarezza: 32 = barra spaziatrice
+	//Per chiarezza: 32 = barra spaziatricedifficulty_upgrade
 	case 32:
-		if(s==false && j==false)
 			shoot();
 		break;
 	default:
